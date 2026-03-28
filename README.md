@@ -59,7 +59,101 @@ By downloading, installing, or using this software, you agree to these terms and
 
 ---
 
-## 📚 Project Overview
+## � Installation & Setup
+
+### Option 1: Termux Method (Recommended - No Root Required)
+
+The fastest way to create Ventoy drives on Android using OTG.
+
+#### Prerequisites
+- Android device with OTG support
+- USB OTG adapter
+- USB drive (8GB+)
+- [Termux from F-Droid](https://f-droid.org/packages/com.termux/)
+
+#### Quick Install (One Command)
+```bash
+curl -L https://raw.githubusercontent.com/1ARCH-USER1/VentoyAndroid/main/install-termux.sh | bash
+```
+
+#### Manual Setup
+```bash
+# Install dependencies
+pkg update
+pkg install curl tar parted exfat-utils
+
+# Setup storage access
+termux-setup-storage
+
+# Download script
+curl -L -o ventoy-termux.sh https://raw.githubusercontent.com/1ARCH-USER1/VentoyAndroid/main/ventoy-termux.sh
+chmod +x ventoy-termux.sh
+
+# Run
+./ventoy-termux.sh create
+```
+
+#### Using Ventox Termux
+```bash
+# Create a new Ventoy drive
+./ventoy-termux.sh create
+
+# List connected USB drives
+./ventoy-termux.sh list
+
+# Copy ISO files to existing Ventoy drive
+./ventoy-termux.sh copy
+```
+
+---
+
+### Option 2: Android App
+
+A full Android application for managing Ventoy drives.
+
+#### Prerequisites
+- Android Studio or Gradle
+- Android SDK 33+
+- JDK 17
+
+#### Build from Source
+```bash
+# Clone repository
+git clone https://github.com/1ARCH-USER1/VentoyAndroid.git
+cd VentoyAndroid
+
+# Setup environment (Linux/Mac)
+export JAVA_HOME=/path/to/jdk-17
+export ANDROID_HOME=/path/to/android-sdk
+
+# Build APK
+./gradlew assembleDebug
+
+# Install to device
+adb install app/build/outputs/apk/debug/app-debug.apk
+```
+
+#### Download Pre-built APK
+*(Coming soon - GitHub Actions will build APK automatically)*
+
+---
+
+### Option 3: Direct Script Usage
+
+If you already have Termux set up with required packages:
+
+```bash
+# Download main script only
+curl -L -o ventoy-termux.sh https://raw.githubusercontent.com/1ARCH-USER1/VentoyAndroid/main/ventoy-termux.sh
+chmod +x ventoy-termux.sh
+
+# Use it
+./ventoy-termux.sh create
+```
+
+---
+
+## �📚 Project Overview
 
 This repository provides tools for managing Ventoy bootable USB drives on Android devices:
 
