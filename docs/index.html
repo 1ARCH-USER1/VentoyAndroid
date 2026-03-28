@@ -857,18 +857,10 @@
                 
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3>Android App Available</h3>
-                    <p>Modern Material Design 3 interface for easy ISO management and USB drive operations.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
                         <i class="fas fa-terminal"></i>
                     </div>
                     <h3>Termux Integration</h3>
-                    <p>Powerful command-line interface for advanced users. Scriptable and automation-ready.</p>
+                    <p>Powerful command-line interface for advanced users. Scriptable and automation-ready with full OTG support.</p>
                 </div>
                 
                 <div class="feature-card">
@@ -896,9 +888,6 @@
                 </button>
                 <button class="tab-btn" onclick="switchTab('manual')">
                     <i class="fas fa-cog"></i> Manual Setup
-                </button>
-                <button class="tab-btn" onclick="switchTab('app')">
-                    <i class="fab fa-android"></i> Android App
                 </button>
             </div>
             
@@ -1012,64 +1001,6 @@ chmod +x ventoy-termux.sh</code></pre>
                             </button>
                             <pre><code>./ventoy-termux.sh create</code></pre>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Android App Tab -->
-            <div class="tab-content" id="app">
-                <h3 style="margin-bottom: 1.5rem; color: var(--light);">Android App Installation</h3>
-                
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>Prerequisites</h4>
-                        <p>You need Android Studio or Gradle installed on your computer to build from source.</p>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h4>Clone Repository</h4>
-                        <div class="code-block" data-label="bash">
-                            <button class="copy-btn" onclick="copyCode(this)">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <pre><code>git clone https://github.com/1ARCH-USER1/VentoyAndroid.git
-cd VentoyAndroid</code></pre>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h4>Build APK</h4>
-                        <div class="code-block" data-label="bash">
-                            <button class="copy-btn" onclick="copyCode(this)">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <pre><code>export JAVA_HOME=/path/to/jdk-17
-export ANDROID_HOME=/path/to/android-sdk
-./gradlew assembleDebug</code></pre>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h4>Install to Device</h4>
-                        <div class="code-block" data-label="bash">
-                            <button class="copy-btn" onclick="copyCode(this)">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <pre><code>adb install app/build/outputs/apk/debug/app-debug.apk</code></pre>
-                        </div>
-                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--warning);">
-                            <i class="fas fa-info-circle"></i> Pre-built APK coming soon with GitHub Actions
-                        </p>
                     </div>
                 </div>
             </div>

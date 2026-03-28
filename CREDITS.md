@@ -28,53 +28,6 @@ This project was developed with the assistance of artificial intelligence:
 - **Repository**: https://github.com/termux/termux-app
 - **Usage**: Runtime environment for shell scripts
 
-### Android Open Source Project (AOSP)
-- **License**: Apache License 2.0
-- **Website**: https://source.android.com
-- **Usage**: Android SDK, APIs, and development tools
-
-### Kotlin
-- **Project**: Kotlin Programming Language
-- **License**: Apache License 2.0
-- **Website**: https://kotlinlang.org
-- **Usage**: Primary programming language for Android app
-
-### Gradle
-- **Project**: Gradle Build Tool
-- **License**: Apache License 2.0
-- **Website**: https://gradle.org
-- **Usage**: Build system for Android app
-
-## Android Libraries Used
-
-### AndroidX / Jetpack
-- **License**: Apache License 2.0
-- **Components Used**:
-  - Core KTX
-  - AppCompat
-  - Material Design Components
-  - ConstraintLayout
-  - Lifecycle (ViewModel, LiveData)
-  - Navigation Component
-  - RecyclerView
-  - CardView
-
-### Material Design 3
-- **Project**: Google Material Design
-- **License**: Apache License 2.0
-- **Usage**: UI design system and components
-
-## Tools and Infrastructure
-
-### Build Tools
-- **Android Gradle Plugin** - Google
-- **Kotlin Gradle Plugin** - JetBrains
-- **ProGuard/R8** - Google
-
-### Development Tools
-- **Android Studio** - Google/JetBrains
-- **OpenJDK** - Oracle/OpenJDK Project
-
 ## Special Thanks
 
 ### Open Source Community
@@ -91,7 +44,7 @@ This project was developed with the assistance of artificial intelligence:
 
 This project complies with the licenses of all third-party components:
 - GPLv3+ for Ventoy-related components
-- Apache 2.0 for Android and Kotlin components
+- GPLv3 for Termux components
 - Respective licenses for all dependencies
 
 Full license texts are available in the [LICENSE](LICENSE) file.
