@@ -35,7 +35,6 @@ By using this software, you acknowledge and agree that:
 ### 📋 About This Project
 
 This repository contains:
-- **Android App**: A Ventoy Manager application for Android
 - **Termux Scripts**: Shell scripts for creating Ventoy drives via OTG on Android
 
 ### 🤖 AI Disclosure
@@ -59,7 +58,7 @@ By downloading, installing, or using this software, you agree to these terms and
 
 ---
 
-## � Installation & Setup
+## 📦 Installation & Setup
 
 ### Option 1: Termux Method (Recommended - No Root Required)
 
@@ -107,38 +106,7 @@ chmod +x ventoy-termux.sh
 
 ---
 
-### Option 2: Android App
-
-A full Android application for managing Ventoy drives.
-
-#### Prerequisites
-- Android Studio or Gradle
-- Android SDK 33+
-- JDK 17
-
-#### Build from Source
-```bash
-# Clone repository
-git clone https://github.com/1ARCH-USER1/VentoyAndroid.git
-cd VentoyAndroid
-
-# Setup environment (Linux/Mac)
-export JAVA_HOME=/path/to/jdk-17
-export ANDROID_HOME=/path/to/android-sdk
-
-# Build APK
-./gradlew assembleDebug
-
-# Install to device
-adb install app/build/outputs/apk/debug/app-debug.apk
-```
-
-#### Download Pre-built APK
-*(Coming soon - GitHub Actions will build APK automatically)*
-
----
-
-### Option 3: Direct Script Usage
+### Option 2: Direct Script Usage
 
 If you already have Termux set up with required packages:
 
@@ -153,18 +121,13 @@ chmod +x ventoy-termux.sh
 
 ---
 
-## �📚 Project Overview
+## 📚 Project Overview
 
 This repository provides tools for managing Ventoy bootable USB drives on Android devices:
 
 ### Components
 
-1. **Ventoy Android Manager** (Android App)
-   - Browse and copy ISO files
-   - Manage USB drives
-   - Modern Material Design 3 UI
-
-2. **Ventoy Termux Scripts** (Termux/OTG)
+1. **Ventoy Termux Scripts** (Termux/OTG)
    - Create Ventoy drives without root
    - USB OTG support
    - Automatic ISO detection
@@ -172,7 +135,7 @@ This repository provides tools for managing Ventoy bootable USB drives on Androi
 ### Quick Links
 
 - [Termux Installation Guide](TERMUX-README.md)
-- [Android App Build Instructions](build_apk.sh)
+- [Source Code](https://github.com/1ARCH-USER1/VentoyAndroid)
 
 ---
 
