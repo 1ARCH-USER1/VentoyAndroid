@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventoy Android | Bootable USB Creator for Android</title>
+    <meta name="description" content="Create bootable USB drives with Ventoy directly from your Android device. No root required!">
+    <meta name="keywords" content="Ventoy, Android, USB, OTG, bootable, ISO, Termux">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--light);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            color: var(--accent);
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .social-nav {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-nav a {
+            color: var(--gray);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-nav a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            background: 
+                radial-gradient(ellipse at top, var(--dark) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom, var(--secondary) 0%, transparent 50%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232563eb' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--light) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(37, 99, 235, 0.5);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: var(--light);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: var(--accent);
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: var(--dark);
+        }
+        
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+        
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.15);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--light);
+        }
+        
+        .feature-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        /* Installation Section */
+        .install {
+            padding: 6rem 2rem;
+            background: var(--darker);
+        }
+        
+        .install-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--gray);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .code-block {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: attr(data-label);
+            position: absolute;
+            top: 0.5rem;
+            right: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .code-block pre {
+            margin: 0;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        
+        .code-block code {
+            color: var(--accent);
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.4rem 0.75rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--gray);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+            color: var(--light);
+        }
+        
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .step-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+        
+        .step-content p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* Warning Section */
+        .warning {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+            border-top: 1px solid rgba(239, 68, 68, 0.3);
+            border-bottom: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .warning-box {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+        
+        .warning-icon {
+            font-size: 2.5rem;
+            color: var(--danger);
+        }
+        
+        .warning-content h3 {
+            color: var(--danger);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .warning-content p {
+            color: var(--gray);
+            margin-bottom: 0.75rem;
+        }
+        
+        .warning-content strong {
+            color: var(--warning);
+        }
+        
+        /* Social Section */
+        .social {
+            padding: 6rem 2rem;
+            background: var(--dark);
+            text-align: center;
+        }
+        
+        .social-grid {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .social-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            min-width: 200px;
+            text-decoration: none;
+            color: var(--light);
+            transition: all 0.3s;
+        }
+        
+        .social-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+        
+        .social-card.instagram:hover {
+            border-color: #e4405f;
+            box-shadow: 0 10px 40px rgba(228, 64, 95, 0.2);
+        }
+        
+        .social-card.telegram:hover {
+            border-color: #0088cc;
+            box-shadow: 0 10px 40px rgba(0, 136, 204, 0.2);
+        }
+        
+        .social-card.discord:hover {
+            border-color: #5865f2;
+            box-shadow: 0 10px 40px rgba(88, 101, 242, 0.2);
+        }
+        
+        .social-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .social-card.instagram i {
+            color: #e4405f;
+        }
+        
+        .social-card.telegram i {
+            color: #0088cc;
+        }
+        
+        .social-card.discord i {
+            color: #5865f2;
+        }
+        
+        .social-card h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .social-card p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--light);
+        }
+        
+        .footer-logo i {
+            color: var(--accent);
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .footer-social a {
+            color: var(--gray);
+            font-size: 1.25rem;
+            transition: all 0.3s;
+        }
+        
+        .footer-social a:hover {
+            color: var(--accent);
+        }
+        
+        .copyright {
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .social-nav {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .hero-stats {
+                gap: 1.5rem;
+            }
+            
+            .stat-value {
+                font-size: 1.75rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .install-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tab-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .warning-box {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .social-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-usb-drive"></i>
+                Ventoy Android
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#install">Install</a></li>
+                <li><a href="#warning">Warning</a></li>
+                <li><a href="#social">Connect</a></li>
+            </ul>
+            
+            <div class="social-nav">
+                <a href="https://instagram.com/rootrequired" target="_blank" title="Instagram @rootrequired">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://t.me/rootrequired" target="_blank" title="Telegram @rootrequired">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="https://discord.gg/rootrequired" target="_blank" title="Discord @rootrequired">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge">
+                <i class="fas fa-bolt"></i>
+                No Root Required
+            </div>
+            
+            <h1>Create Bootable USB Drives<br>From Your Android Phone</h1>
+            
+            <p>Turn any USB drive into a multi-boot powerhouse with Ventoy. 
+               Flash ISOs directly from your Android device using OTG - no computer needed!</p>
+            
+            <div class="hero-buttons">
+                <a href="#install" class="btn btn-primary">
+                    <i class="fas fa-download"></i>
+                    Get Started
+                </a>
+                <a href="https://github.com/1ARCH-USER1/VentoyAndroid" target="_blank" class="btn btn-secondary">
+                    <i class="fab fa-github"></i>
+                    View on GitHub
+                </a>
+            </div>
+            
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-value">900+</div>
+                    <div class="stat-label">ISOs Supported</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Root Needed</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Free & Open</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-container">
+            <div class="section-title">
+                <h2>Why Choose Ventoy Android?</h2>
+                <p>Everything you need to create bootable USB drives, right from your pocket</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>No Root Required</h3>
+                    <p>Works with standard Termux permissions. No need to root your Android device or void your warranty.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3>USB OTG Support</h3>
+                    <p>Connect any USB drive via OTG adapter and turn it into a bootable powerhouse in minutes.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-compact-disc"></i>
+                    </div>
+                    <h3>Multi-ISO Support</h3>
+                    <p>Boot 900+ different ISO files from a single USB drive. Windows, Linux, rescue disks - all in one place.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Android App Available</h3>
+                    <p>Modern Material Design 3 interface for easy ISO management and USB drive operations.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <h3>Termux Integration</h3>
+                    <p>Powerful command-line interface for advanced users. Scriptable and automation-ready.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Safe & Verified</h3>
+                    <p>Multiple confirmation steps before formatting. Drive verification after Ventoy installation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="install" id="install">
+        <div class="section-container">
+            <div class="section-title">
+                <h2>Installation Guide</h2>
+                <p>Choose your preferred method to get started</p>
+            </div>
+            
+            <div class="install-tabs">
+                <button class="tab-btn active" onclick="switchTab('quick')">
+                    <i class="fas fa-bolt"></i> Quick Install
+                </button>
+                <button class="tab-btn" onclick="switchTab('manual')">
+                    <i class="fas fa-cog"></i> Manual Setup
+                </button>
+                <button class="tab-btn" onclick="switchTab('app')">
+                    <i class="fab fa-android"></i> Android App
+                </button>
+            </div>
+            
+            <!-- Quick Install Tab -->
+            <div class="tab-content active" id="quick">
+                <h3 style="margin-bottom: 1.5rem; color: var(--light);">One-Command Installation (Recommended)</h3>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Install Termux</h4>
+                        <p>Download and install <strong>Termux from F-Droid</strong> (NOT Play Store version). 
+                           The Play Store version is outdated and doesn't work properly.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Run the Installer</h4>
+                        <p>Open Termux and paste this command:</p>
+                        <div class="code-block" data-label="bash">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <pre><code>curl -L https://raw.githubusercontent.com/1ARCH-USER1/VentoyAndroid/main/install-termux.sh | bash</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Create Your Ventoy Drive</h4>
+                        <p>Connect USB via OTG and run:</p>
+                        <div class="code-block" data-label="bash">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <pre><code>ventoy-termux.sh create</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Manual Setup Tab -->
+            <div class="tab-content" id="manual">
+                <h3 style="margin-bottom: 1.5rem; color: var(--light);">Manual Installation</h3>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Update Packages</h4>
+                        <div class="code-block" data-label="bash">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <pre><code>pkg update && pkg upgrade -y</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Install Dependencies</h4>
+                        <div class="code-block" data-label="bash">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <pre><code>pkg install -y curl tar parted exfat-utils</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Setup Storage</h4>
+                        <div class="code-block" data-label="bash">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <pre><code>termux-setup-storage</code></pre>
+                        </div>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Grant storage permission when prompted</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Download Script</h4>
+                        <div class="code-block" data-label="bash">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <pre><code>curl -L -o ventoy-termux.sh https://raw.githubusercontent.com/1ARCH-USER1/VentoyAndroid/main/ventoy-termux.sh
+chmod +x ventoy-termux.sh</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Run Ventoy Creator</h4>
+                        <div class="code-block" data-label="bash">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <pre><code>./ventoy-termux.sh create</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Android App Tab -->
+            <div class="tab-content" id="app">
+                <h3 style="margin-bottom: 1.5rem; color: var(--light);">Android App Installation</h3>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Prerequisites</h4>
+                        <p>You need Android Studio or Gradle installed on your computer to build from source.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Clone Repository</h4>
+                        <div class="code-block" data-label="bash">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <pre><code>git clone https://github.com/1ARCH-USER1/VentoyAndroid.git
+cd VentoyAndroid</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Build APK</h4>
+                        <div class="code-block" data-label="bash">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <pre><code>export JAVA_HOME=/path/to/jdk-17
+export ANDROID_HOME=/path/to/android-sdk
+./gradlew assembleDebug</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Install to Device</h4>
+                        <div class="code-block" data-label="bash">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <pre><code>adb install app/build/outputs/apk/debug/app-debug.apk</code></pre>
+                        </div>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--warning);">
+                            <i class="fas fa-info-circle"></i> Pre-built APK coming soon with GitHub Actions
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Warning Section -->
+    <section class="warning" id="warning">
+        <div class="warning-box">
+            <div class="warning-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="warning-content">
+                <h3><i class="fas fa-radiation"></i> Critical Warning</h3>
+                <p><strong>ALL DATA ON THE SELECTED USB DRIVE WILL BE ERASED!</strong></p>
+                <p>This operation <strong>CANNOT BE UNDONE</strong>. Creating a Ventoy drive involves complete reformatting of the USB drive.</p>
+                <p>Always <strong>double-check</strong> you are selecting the correct drive before proceeding. The script requires typing "YES" to confirm.</p>
+                <p style="margin-top: 1rem;"><strong>AI-Generated Notice:</strong> This project was created with AI assistance. Use at your own risk. No warranty provided.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Section -->
+    <section class="social" id="social">
+        <div class="section-container">
+            <div class="section-title">
+                <h2>Connect With Us</h2>
+                <p>Join the community and get support</p>
+            </div>
+            
+            <div class="social-grid">
+                <a href="https://instagram.com/rootrequired" target="_blank" class="social-card instagram">
+                    <i class="fab fa-instagram"></i>
+                    <h4>Instagram</h4>
+                    <p>@rootrequired</p>
+                </a>
+                
+                <a href="https://t.me/rootrequired" target="_blank" class="social-card telegram">
+                    <i class="fab fa-telegram"></i>
+                    <h4>Telegram</h4>
+                    <p>@rootrequired</p>
+                </a>
+                
+                <a href="https://discord.gg/rootrequired" target="_blank" class="social-card discord">
+                    <i class="fab fa-discord"></i>
+                    <h4>Discord</h4>
+                    <p>@rootrequired</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-usb"></i>
+                Ventoy Android
+            </div>
+            
+            <div class="footer-links">
+                <a href="https://github.com/1ARCH-USER1/VentoyAndroid/blob/main/LICENSE">License</a>
+                <a href="https://github.com/1ARCH-USER1/VentoyAndroid/blob/main/CREDITS.md">Credits</a>
+                <a href="https://github.com/1ARCH-USER1/VentoyAndroid/issues">Issues</a>
+            </div>
+            
+            <div class="footer-social">
+                <a href="https://instagram.com/rootrequired" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://t.me/rootrequired" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="https://discord.gg/rootrequired" target="_blank">
+                    <i class="fab fa-discord"></i>
+                </a>
+                <a href="https://github.com/1ARCH-USER1/VentoyAndroid" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>© 2024 Ventoy Android Project. This software is provided "as is" without warranty.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                Not affiliated with the official Ventoy project. Ventoy is © longpanda (ventoy@foxmail.com)
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Switching
+        function switchTab(tabName) {
+            // Remove active class from all tabs and content
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+        
+        // Copy Code Function
+        function copyCode(btn) {
+            const codeBlock = btn.nextElementSibling;
+            const code = codeBlock.querySelector('code').innerText;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                btn.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-copy"></i>';
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+        
+        // Smooth Scroll for Navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Navbar Background on Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(15, 23, 42, 0.98)';
+            } else {
+                nav.style.background = 'rgba(15, 23, 42, 0.95)';
+            }
+        });
+        
+        // Animation on Scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.feature-card, .step, .social-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
